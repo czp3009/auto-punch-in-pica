@@ -75,18 +75,20 @@ def punch_in(token: string):
 if __name__ == '__main__':
     input_email = None
     input_password = None
-    if Path(config_file_name).is_file():
+    if len(sys.argv) > 1:
+        if len(sys.argv) != 3:
+            sys.exit("Usage:\npython main.py {email} {password}")
+        input_email = sys.argv[1]
+        input_password = sys.argv[2]
+    else:
+        config_file = Path(__file__).resolve().parent / config_file_name
+        if not config_file.exists():
+            sys.exit("Please rename '_%(s)s' to '%(s)s'" % {"s": config_file_name})
         config = configparser.ConfigParser()
-        config.read(config_file_name)
+        config.read(config_file)
         default_section = config["DEFAULT"]
         input_email = default_section["email"]
         input_password = default_section["password"]
-    else:
-        arguments = sys.argv
-        if len(arguments) != 3:
-            sys.exit("Usage:\npython main.py {email} {password}")
-        input_email = arguments[1]
-        input_password = arguments[2]
     if not input_email or not input_password:
         sys.exit("Email and password can't be empty")
     current_token = sign_in(input_email, input_password)

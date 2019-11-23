@@ -27,7 +27,7 @@ password = yourPassword
 python main.py yourEmail yourPassword
 ```
 
-配置文件的优先级高于命令行参数.
+命令行参数的优先级高于配置文件.
 
 若有任何问题请提交 issue.
 
